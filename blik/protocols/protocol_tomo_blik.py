@@ -30,6 +30,7 @@ from pyworkflow.constants import BETA
 from pyworkflow.protocol import params
 
 from tomo.protocols import ProtTomoBase
+from blik.constants import BLIK
 
 
 class ProtBlikTomo(EMProtocol, ProtTomoBase):
@@ -55,12 +56,12 @@ class ProtBlikTomo(EMProtocol, ProtTomoBase):
 
     def runNapariBlikStep(self):
         from blik import Plugin, NAPARI
-        tomogram = self.inputTomograms.get().firstItem()
+        tomogram = self.inputTomograms.get().getFirstItem()
         tomogramPath = os.path.abspath(tomogram.getFileName())
         startFilePath = ''
 
         if os.path.exists(tomogramPath):
-            args = '-w blik %s %s' % (startFilePath, tomogramPath)
+            args = '-w %s -- %s %s' % (BLIK, startFilePath, tomogramPath)
             Plugin.runBlik(self, NAPARI, args)
 
     def createOutputStep(self):

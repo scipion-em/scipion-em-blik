@@ -25,7 +25,7 @@
 # **************************************************************************
 import os
 import pwem
-from pyworkflow.utils import runJob
+import pyworkflow.utils as pwutils
 
 from blik.constants import *
 
@@ -39,10 +39,16 @@ class Plugin(pwem.Plugin):
     @classmethod
     def _defineVariables(cls):
         cls._defineVar(BLIK_ENV_ACTIVATION, BLIK_ACTIVATION_CMD)
+        cls._defineEmVar(BLIK_HOME, 'blik-' + BLIK_DEF_VER)
 
     @classmethod
     def getEnviron(cls):
-        return None
+        """ Setup the environment variables needed to launch sphire. """
+        environ = pwutils.Environ(os.environ)
+        if 'PYTHONPATH' in environ:
+            # this is required for python virtual env to work
+            del environ['PYTHONPATH']
+        return environ
 
     @classmethod
     def getDependencies(cls):
@@ -83,13 +89,11 @@ class Plugin(pwem.Plugin):
     @classmethod
     def runBlik(cls, protocol, program, args):
         """ Run Napari boxmanager from a given protocol. """
-        launchPath = protocol._getExtraPath()
-        fullProgram = '%s %s && cd %s && %s' % (cls.getCondaActivationCmd(),
+        fullProgram = '%s %s && %s' % (cls.getCondaActivationCmd(),
                                                 BLIK_ACTIVATION_CMD,
-                                                launchPath,
                                                 program)
-        runJob(None, fullProgram, args, env=cls.getEnviron(), cwd=None,
-               numberOfMpi=1)
+        pwutils.runJob(None, fullProgram, args, env=cls.getEnviron(), cwd=None,
+                       numberOfMpi=1)
 
     @classmethod
     def defineBinaries(cls, env):
