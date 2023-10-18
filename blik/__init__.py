@@ -43,7 +43,7 @@ class Plugin(pwem.Plugin):
 
     @classmethod
     def getEnviron(cls):
-        """ Setup the environment variables needed to launch sphire. """
+        """ Setup the environment variables needed to launch napari. """
         environ = pwutils.Environ(os.environ)
         if 'PYTHONPATH' in environ:
             # this is required for python virtual env to work

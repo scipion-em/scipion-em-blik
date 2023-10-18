@@ -56,13 +56,21 @@ class ProtBlikTomo(EMProtocol, ProtTomoBase):
 
     def runNapariBlikStep(self):
         from blik import Plugin, NAPARI
-        tomogram = self.inputTomograms.get().getFirstItem()
-        tomogramPath = os.path.abspath(tomogram.getFileName())
-        startFilePath = ''
+        import time
+        time.sleep(10)
+        startFilesPath = ''
+        tomogramsPath = ' '.join(os.path.abspath(tomogram.getFileName()) for tomogram in self.inputTomograms.get().iterItems())
 
-        if os.path.exists(tomogramPath):
-            args = '-w %s -- %s %s' % (BLIK, startFilePath, tomogramPath)
-            Plugin.runBlik(self, NAPARI, args)
+        # Assuming that the .star files are in the same directory where the tomogram is
+        tomogramList = tomogramsPath.split(' ')
+        for tomogram in tomogramList:
+            starFile, _ = os.path.splitext(tomogram)
+            starFile += '.star'
+            if os.path.exists(starFile):
+                startFilesPath += starFile + ' '
+
+        args = '-w %s -- %s %s' % (BLIK, startFilesPath, tomogramsPath)
+        Plugin.runBlik(self, NAPARI, args)
 
     def createOutputStep(self):
         pass
