@@ -29,7 +29,7 @@ from pwem.protocols import EMProtocol
 from pyworkflow.constants import BETA
 from pyworkflow.protocol import params
 
-from tomo.protocols import ProtTomoBase
+from tomo.protocols import ProtTomoPicking
 from blik.constants import BLIK
 
 

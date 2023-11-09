@@ -30,6 +30,7 @@ import pyworkflow.utils as pwutils
 from blik.constants import *
 
 __version__ = '3.0.0'
+_logo = 'logo.png'
 
 
 class Plugin(pwem.Plugin):
