@@ -24,4 +24,4 @@
 # *
 # **************************************************************************
 
-from .protocol_tomo_blik import ProtBlikTomo
+from .protocol_blik_picking import ProtBlikTomoPicking

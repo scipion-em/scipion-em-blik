@@ -24,4 +24,4 @@
 # *
 # **************************************************************************
 
-from .blik_viewer import BlikDataViewer
+# from .blik_viewer import BlikDataViewer

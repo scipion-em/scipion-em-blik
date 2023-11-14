@@ -24,6 +24,7 @@
 # *
 # **************************************************************************
 import os
+from pathlib import Path
 import pwem
 import pyworkflow.utils as pwutils
 
@@ -80,7 +81,7 @@ class Plugin(pwem.Plugin):
         envPath = os.environ.get('PATH', "")
         # keep path since conda likely in there
         installEnvVars = {'PATH': envPath} if envPath else None
-        env.addPackage(f'blik', version=version,
+        env.addPackage('blik', version=version,
                        tar='void.tgz',
                        commands=blik_commands,
                        neededProgs=cls.getDependencies(),
@@ -88,16 +89,16 @@ class Plugin(pwem.Plugin):
                        vars=installEnvVars)
 
     @classmethod
-    def runBlik(cls, protocol, program, args):
-        """ Run Napari boxmanager from a given protocol. """
-        fullProgram = '%s %s && %s' % (cls.getCondaActivationCmd(),
-                                                BLIK_ACTIVATION_CMD,
-                                                program)
-        pwutils.runJob(None, fullProgram, args, env=cls.getEnviron(), cwd=None,
-                       numberOfMpi=1)
+    def runBlik(cls, protocol, output_path, tomograms=()):
+        launch_script = Path(__file__).parent / 'launch_blik.py'  # a bit ugly, but oh well...
+        conda_activate = f'{cls.getCondaActivationCmd()} {BLIK_ACTIVATION_CMD}'
+        blik_command = f'python {launch_script} {" ".join(tomograms)} -o {output_path}'
+        fullProgram = f'{conda_activate} && {blik_command}'
+
+        pwutils.runJob(None, fullProgram, args, env=cls.getEnviron(), cwd=None, numberOfMpi=1)
 
     @classmethod
     def defineBinaries(cls, env):
-        cls.addBlikPackage(env, V0_5_5, default=True)
+        cls.addBlikPackage(env, V0_6_0, default=True)
 
 

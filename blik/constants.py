@@ -31,10 +31,9 @@ def getBlikEnvName(version):
     return f"blik-{version}"
 
 
-V0_5_5 = '0.5.5'
+V0_6_0 = '0.6.0'
 
-BLIK_DEF_VER = V0_5_5
+BLIK_DEF_VER = V0_6_0
 BLIK_ACTIVATION_CMD = 'conda activate %s' % getBlikEnvName(BLIK_DEF_VER)
 BLIK_ENV_ACTIVATION = 'BLIK_ENV_ACTIVATION'
-NAPARI = 'napari'
 BLIK = 'blik'
