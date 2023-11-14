@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from pyworkflow.constants import BETA
 from tomo.protocols import ProtTomoPicking

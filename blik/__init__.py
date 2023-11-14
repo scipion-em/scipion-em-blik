@@ -90,12 +90,12 @@ class Plugin(pwem.Plugin):
 
     @classmethod
     def runBlik(cls, protocol, output_path, tomograms=()):
-        launch_script = Path(__file__).parent / 'launch_blik.py'  # a bit ugly, but oh well...
+        launch_script = Path(__file__).parent / 'protocols' / 'launch_blik.py'  # a bit ugly, but oh well...
         conda_activate = f'{cls.getCondaActivationCmd()} {BLIK_ACTIVATION_CMD}'
-        blik_command = f'python {launch_script} {" ".join(tomograms)} -o {output_path}'
+        blik_command = f'python {launch_script} {" ".join(str(t) for t in tomograms)} -o {output_path}'
         fullProgram = f'{conda_activate} && {blik_command}'
 
-        pwutils.runJob(None, fullProgram, args, env=cls.getEnviron(), cwd=None, numberOfMpi=1)
+        pwutils.runJob(None, fullProgram, params=[], env=cls.getEnviron(), cwd=None, numberOfMpi=1)
 
     @classmethod
     def defineBinaries(cls, env):
