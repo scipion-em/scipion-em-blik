@@ -99,6 +99,6 @@ class Plugin(pwem.Plugin):
 
     @classmethod
     def defineBinaries(cls, env):
-        cls.addBlikPackage(env, V0_6_0, default=True)
+        cls.addBlikPackage(env, V0_6_1, default=True)
 
 
